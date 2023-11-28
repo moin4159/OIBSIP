@@ -1,93 +1,98 @@
-let loginContainerEl = document.getElementById("loginContainer");
-let loginEmailEl = document.getElementById("loginEmail");
-let loginPasswordEl = document.getElementById("loginPassword");
-let loginErrorMessageEl = document.getElementById("loginErrorMessage");
-let loginPasswordErrorMessageEl = document.getElementById("loginPasswordErrorMessage");
-let alreadyExistErrorMessageEl = document.getElementById("alreadyExistErrorMessage");
+const input = document.querySelector("input");
+const addButton = document.querySelector(".add-button");
+const todosHtml = document.querySelector(".todos");
+const emptyImage = document.querySelector(".empty-image");
+let todosJson = JSON.parse(localStorage.getItem("todos")) || [];
+const deleteAllButton = document.querySelector(".delete-all");
+const filters = document.querySelectorAll(".filter");
+let filter = '';
 
-let registerContainerEl = document.getElementById("registerContainer");
-let registerEmailEl = document.getElementById("registerEmail");
-let registerPasswordEl = document.getElementById("registerPassword");
-let registerErrorMessageEl = document.getElementById("registerErrorMessage");
-let registerPasswordErrorMessageEl = document.getElementById("registerPasswordErrorMessage");
-let registrationMessageEl = document.getElementById("registrationMessage");
+showTodos();
 
-let successDashboardEl = document.getElementById("successDashboard");
-let loggedInUserEl = document.getElementById("loggedInUser");
-
-function showRegisterForm() {
-    console.log("showRegisterForm clicked");
-    loginContainerEl.classList.add("d-none");
-    registerContainerEl.classList.remove("d-none");
-    registrationMessageEl.classList.add("d-none");
+function getTodoHtml(todo, index) {
+  if (filter && filter != todo.status) {
+    return '';
+  }
+  let checked = todo.status == "completed" ? "checked" : "";
+  return /* html */ `
+    <li class="todo">
+      <label for="${index}">
+        <input id="${index}" onclick="updateStatus(this)" type="checkbox" ${checked}>
+        <span class="${checked}">${todo.name}</span>
+      </label>
+      <button class="delete-btn" data-index="${index}" onclick="remove(this)"><i class="fa fa-times"></i></button>
+    </li>
+  `; 
 }
 
-function showLoginForm() {
-    console.log("showLoginForm clicked");
-    loginContainerEl.classList.remove("d-none");
-    registerContainerEl.classList.add("d-none");
+function showTodos() {
+  if (todosJson.length == 0) {
+    todosHtml.innerHTML = '';
+    emptyImage.style.display = 'block';
+  } else {
+    todosHtml.innerHTML = todosJson.map(getTodoHtml).join('');
+    emptyImage.style.display = 'none';
+  }
 }
 
-function isValidPassword(password) {
-    return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(password);
+function addTodo(todo)  {
+  input.value = "";
+  todosJson.unshift({ name: todo, status: "pending" });
+  localStorage.setItem("todos", JSON.stringify(todosJson));
+  showTodos();
 }
 
-function isUsernameAvailable(username) {
-    return !localStorage.getItem(username);
+input.addEventListener("keyup", e => {
+  let todo = input.value.trim();
+  if (!todo || e.key != "Enter") {
+    return;
+  }
+  addTodo(todo);
+});
+
+addButton.addEventListener("click", () => {
+  let todo = input.value.trim();
+  if (!todo) {
+    return;
+  }
+  addTodo(todo);
+});
+
+function updateStatus(todo) {
+  let todoName = todo.parentElement.lastElementChild;
+  if (todo.checked) {
+    todoName.classList.add("checked");
+    todosJson[todo.id].status = "completed";
+  } else {
+    todoName.classList.remove("checked");
+    todosJson[todo.id].status = "pending";
+  }
+  localStorage.setItem("todos", JSON.stringify(todosJson));
 }
 
-function register() {
-    let username = registerEmailEl.value;
-    let password = registerPasswordEl.value;
-    let registrationMessage = registrationMessageEl;
-    let registerErrorMessage = registerErrorMessageEl;
-    let registerPasswordErrorMessage = registerPasswordErrorMessageEl;
+function remove(todo) {
+  const index = todo.dataset.index;
+  todosJson.splice(index, 1);
+  showTodos();
+  localStorage.setItem("todos", JSON.stringify(todosJson));
+}
 
-    registrationMessage.classList.add("d-none"); 
-    registerErrorMessage.textContent = ''; 
-    registerPasswordErrorMessage.textContent = '';
-
-    if (!username) {
-        registerErrorMessage.textContent = 'Please enter a username.';
-    } else if (!isValidPassword(password)) {
-        registerPasswordErrorMessage.textContent = 'Please enter an alphanumeric password of at least 8 characters.';
-    } else if (!isUsernameAvailable(username)) {
-        registerErrorMessage.textContent = 'Username already exists. Please choose a different username.';
+filters.forEach(function (el) {
+  el.addEventListener("click", (e) => {
+    if (el.classList.contains('active')) {
+      el.classList.remove('active');
+      filter = '';
     } else {
-        localStorage.setItem(username, password);
-        registrationMessage.textContent = 'Registration successful! You can now log in.';
-        registrationMessage.classList.remove("d-none");;
-        registerEmailEl.value = '';
-        registerPasswordEl.value = '';
+      filters.forEach(tag => tag.classList.remove('active'));
+      el.classList.add('active');
+      filter = e.target.dataset.filter;
     }
-}
+    showTodos();
+  });
+});
 
-function login() {
-    let username = loginEmailEl.value;
-    let password = loginPasswordEl.value;
-
-    loginErrorMessageEl.textContent = ''; 
-    loginPasswordErrorMessageEl.textContent = '';
-    
-    if (localStorage.getItem(username) === password) {
-        loginContainerEl.classList.add("d-none");
-        successDashboardEl.classList.remove("d-none");
-        loggedInUserEl.textContent = username;
-    } else if (!username) {
-        alreadyExistErrorMessageEl.textContent = '';
-        loginErrorMessageEl.textContent = 'Please enter a username.';  
-    } else if (!isValidPassword(password)) {
-        loginPasswordErrorMessageEl.textContent = 'Please enter an alphanumeric password of at least 8 characters.';
-        alreadyExistErrorMessageEl.textContent = '';
-    } else {
-        alreadyExistErrorMessageEl.textContent = 'Invalid username or password.';
-    }
-    
-}
-
-function logout() {
-    successDashboardEl.classList.add("d-none");
-    loginContainerEl.classList.remove("d-none");
-    loginEmailEl.value = '';
-    loginPasswordEl.value = '';
-}
+deleteAllButton.addEventListener("click", () => {
+  todosJson = [];
+  localStorage.setItem("todos", JSON.stringify(todosJson));
+  showTodos();
+});

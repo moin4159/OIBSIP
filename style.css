@@ -1,184 +1,204 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 0;
+  font-family: 'Roboto', sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:blueviolet;
+  background-position: center;
+  background-size: cover;
 }
 
-.background-container{
-    background-image: linear-gradient(to top right, #6267f5, #e340e0);
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family:'Courier New', Courier, monospace;
-    background-size: cover;
+.container {
+  width: 400px;
+  height: auto;
+  min-height: 400px;
+  padding: 30px;
+  background: transparent;
+  border: 2px solid #e6b7eca1;
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
 }
 
-.main-container{
-    background-color: white;
-    width: 70%;
-    height: 75%;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+h1 {
+  color: #eee;
+  text-align: center;
+  margin-bottom: 36px;
 }
 
-.login-logo{
-    max-width: 40%;
-    border-radius: 10px;
-    padding: 0px;
-    align-content: left;
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
 }
 
-.container{
-    margin: 0px;
-    width: 40%;
+.todo-input {
+  flex: 1;
+  outline: none;
+  padding: 10px 10px 10px 20px;
+  background-color: transparent;
+  border: 2px solid #e6b7eca1;
+  border-radius: 30px;
+  color: #eee;
+  font-size: 16px;
+  margin-right: 10px;
 }
 
-.error-message {
-    color: red;
-    font-size: 12px;
+.todo-input::placeholder {
+  color: #bfbfbf;
 }
 
-
-.heading{
-    font-weight: bolder;
-    font-size: 24px;
-    margin: 0px;
+.add-button {
+  border: none;
+  outline: none;
+  background: #e6b7eca1;
+  color: #fff;
+  font-size: 35px;
+  cursor: pointer;
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
 }
 
-.sub-heading{
-    font-size: 14px;
-    margin-top: 0px;
-    color: grey;
+.empty-image {
+  margin: 55px auto 0;
+  display: block;
 }
 
-label{
-    font-size: 15px;
+.todo {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #463c7b;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px 12px;
+  border: 2px solid #e6b7eca1;
+  transition: all 0.2s ease;
 }
 
-.success-icon{
-    color: #6aed4a;
-    font-size: 80px;
-    margin-bottom: 30px;
-    margin-top: 20px;
+.todo:first-child {
+  margin-top: 0;
 }
 
-.success-container{
-    margin: 0px;
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.todo:last-child {
+  margin-bottom: 0;
 }
 
-.success-message{
-    font-size: 23px;
-    margin-bottom: 10px;
-    text-align: center;
+.todo:hover {
+  background-color:#e6b7eca1;
 }
 
-.secure-page-message{
-    font-size: 18px;
-    margin-bottom: 90px;
-    text-align: center;
-
+.todo label {
+  cursor: pointer;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  color: #eee;
 }
 
-.registration-message{
-    color: green; 
-    margin-top: 13px;
-    font-weight: bold;
+.todo span {
+  padding-left: 20px;
+  position: relative;
+  cursor: pointer;
 }
 
-.custom-input {
-    width: 100%;
-    padding: 9px 10px;
-    font-size: 16px;
-    line-height: 1;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+span::before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  margin-left: -30px;
+  border-radius: 100px;
+  border: 2px solid #e6b7eca1;
 }
 
-.custom-input:focus {
-    border-color: #6267f5;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(98, 103, 245, 0.25);
+input[type='checkbox'] {
+  visibility: hidden;
 }
 
-@media screen and (max-width: 768px){
-    .main-container{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 30px; 
-        width: 80%;
-        padding: 10px;;
-        height: 100%;
-    }
-    .container{
-        margin: 0px;
-        width: 70%;
-    }
-    .login-logo{
-        max-width: 45%;
-    }
-    .heading{
-        font-size: 22px;
-    }
-    
-    .sub-heading{
-        font-size: 11px;        
-    }
-    .success-container{
-        padding: 20px;
-        width: 100%;
-        margin: 0px;
-    }
-    .success-message{
-        font-size: 19px; 
-    }
-    .secure-page-message{
-        font-size: 15px;
-    }
-    .success-icon{    
-        margin-bottom: 30px;
-        margin-top: 0px;
-    }
-    .success-main-container {
-        background-color: white;
-         width: 70%;
-        border-radius: 10px;    
-    }
-    .background-container{
-        height: 100vh;
-    }
-    .custom-input {
-        width: 100%;
-        padding: 5px 10px;
-        font-size: 14px;
-        line-height: 1;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: 4px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-    .custom-input:focus {
-        border-color: #92dbf1;
-        outline: 0;
-        box-shadow: 0 0 0 0.2rem rgba(137, 211, 230, 0.25);
-    }
-    
+input:checked + span {
+  text-decoration: line-through
+}
+
+.todo:hover input:checked + span::before, input:checked + span::before {
+  background: url(./check.svg) 50% 50% no-repeat #09bb21;
+  border-color: #09bb21;
+}
+
+.todo:hover span::before {
+  border-color: #eee;
+}
+
+.todo .delete-btn  {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #eee;
+  font-size: 24px;
+}
+
+.todos-container  {
+  height: 400px;
+  overflow: overlay;
+}
+
+.todos-container::-webkit-scrollbar-track  {
+  background: rgb(247, 247, 247);
+  border-radius: 20px
+}
+
+.todos-container::-webkit-scrollbar  {
+  width: 0;
+}
+
+.todos-container:hover::-webkit-scrollbar  {
+  width: 7px;
+}
+
+.todos-container::-webkit-scrollbar-thumb  {
+  background: #d5d5d5;
+  border-radius: 20px;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.filter {
+  color: #eee;
+  padding: 5px 15px;
+  border-radius: 100px;
+  border: 2px solid #e6b7eca1;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.filter.active, .filter:hover {
+  background-color: #e6b7eca1;
+}
+
+.delete-all {
+  display: flex;
+  color: #eee;
+  padding: 7px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.delete-all:hover {
+  border-radius: 5px;
+  background-color: #e6b7eca1;
 }
